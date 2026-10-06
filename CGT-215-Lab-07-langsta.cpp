@@ -14,44 +14,43 @@ int main()
 	World world(Vector2f(0, 1));
 	// Create the ball
 	PhysicsCircle ball;
-	ball.setCenter(Vector2f(200, 100));
+	ball.setCenter(Vector2f(50, 100));
 	ball.setRadius(20);
-	
 	world.AddPhysicsBody(ball);
-	ball.applyImpulse(Vector2f(200.f, 100.f));
+	ball.applyImpulse(Vector2f(2.f, 0.f)); //applies an impulse variable to push the ball
 	// Create the floor
 	PhysicsRectangle floor;
-	floor.setSize(Vector2f(800, 20));
+	floor.setSize(Vector2f(800, 50));
 	floor.setCenter(Vector2f(400, 590));
 	floor.setStatic(true);
 	world.AddPhysicsBody(floor);
 	//create right wall
 	PhysicsRectangle wall_right;
-	wall_right.setSize(Vector2f(20, 800));
+	wall_right.setSize(Vector2f(50, 800));
 	wall_right.setCenter(Vector2f(790, 200));
 	wall_right.setStatic(true);
 	world.AddPhysicsBody(wall_right);
 	//create left wall
 	PhysicsRectangle wall_left;
-	wall_left.setSize(Vector2f(20, 800));
+	wall_left.setSize(Vector2f(50, 800));
 	wall_left.setCenter(Vector2f(10, 200));
 	wall_left.setStatic(true);
 	world.AddPhysicsBody(wall_left);
 	//create ceiling
 	PhysicsRectangle ceiling;
-	ceiling.setSize(Vector2f(800, 20));
+	ceiling.setSize(Vector2f(800, 50));
 	ceiling.setCenter(Vector2f(400, 10));
 	ceiling.setStatic(true);
 	world.AddPhysicsBody(ceiling);
 	//create center rectangle
 	PhysicsRectangle center;
-	center.setSize(Vector2f(80, 80));
+	center.setSize(Vector2f(100, 100));
 	center.setCenter(Vector2f(400, 300));
 	center.setStatic(true);
 	world.AddPhysicsBody(center);
-	// thud counts
+	// thud counts 
 	int thudCount(0);
-	int bangCount(0);
+	
 	floor.onCollision = [&thudCount](PhysicsBodyCollisionResult result) {
 		cout << "thud " << thudCount << endl;
 		thudCount++;
@@ -68,17 +67,18 @@ int main()
 		cout << "thud " << thudCount << endl;
 		thudCount++;
 		};
+	//bang counts
+	int bangCount(0);
 	center.onCollision = [&bangCount](PhysicsBodyCollisionResult result) {
 		cout << " bang " << bangCount << endl;
 		bangCount++;
 		};
 	
-	if (bangCount == 3) {
-		exit(0);
-	}
+	
 	Clock clock;
 	Time lastTime(clock.getElapsedTime());
 	while (true) {
+
 		// calculate MS since last frame
 		Time currentTime(clock.getElapsedTime());
 		Time deltaTime(currentTime - lastTime);
@@ -95,6 +95,10 @@ int main()
 		window.draw(ceiling);
 		window.draw(center);
 		window.display();
+		if (bangCount == 3) {
+			exit(0);
+		}
+		
 	}
 	
 }
